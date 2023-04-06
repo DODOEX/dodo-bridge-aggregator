@@ -1,3 +1,4 @@
+import { CrossChainBusinessException } from './../../exception/index';
 import axios from "axios";
 import BigNumber from "bignumber.js";
 import { find } from "lodash";
@@ -13,9 +14,25 @@ async function getToken() {
     return res.data.data;
 }
 
+const errorCodes = {
+    ERROR: { code: 'ERROR', message: 'unknown error' },
+    NOT_SUPPORT: { code: 'NOT_SUPPORT', message: 'NOT SUPPORT' },
+}
 const squidConfig: CrossChainConfig = {
     name: 'swft_test',
     apiInterface: {
+        health: {
+            url: `http://127.0.0.1:3000/health`,
+            method: 'get',
+            requestAfter: (res) => {
+                if (res.code !== 0) throw new CrossChainBusinessException(errorCodes.ERROR);
+                return { isAvailable: res.data, description: res.data ? 'ok' : 'maintain' };
+            },
+            responseMapping: {
+                isAvailable: 'isAvailable',
+                description: 'description'
+            }
+        },
         route: {
             url: `${serverHost}/api/sswap/quote`,
             method: 'post',
@@ -24,12 +41,12 @@ const squidConfig: CrossChainConfig = {
                 const tokenResult = await getToken();
                 const fromChainInfo = find(tokenResult.tokens, (item: any) => item.address.toLowerCase() === params.fromTokenAddress.toLowerCase() && item.chainId === String(params.fromChainId));
                 const toChainInfo = find(tokenResult.tokens, (item: any) => item.address.toLowerCase() === params.toTokenAddress.toLowerCase() && item.chainId === String(params.toChainId));
-                if (!fromChainInfo || !toChainInfo) throw new Error('1111');
+                if (!fromChainInfo || !toChainInfo) throw new CrossChainBusinessException(errorCodes.NOT_SUPPORT);
                 return { fromChainInfo, toChainInfo };
             },
             // after: () => { },
             requestAfter: (res) => {
-                if (res.resCode !== 100) throw new Error('失败1' + res.resMsg)
+                if (res.resCode !== 100) throw new CrossChainBusinessException(errorCodes.ERROR);
                 return res.data;
             },
             requestMapping: {
@@ -54,13 +71,13 @@ const squidConfig: CrossChainConfig = {
                 fee: {
                     swapFee: '0',
                     destinationGasFee: {
-                        format: (route, { dodoData }) => {
-                            return new BigNumber(dodoData.fromAmount).times(route.txData.fee).div(`1e${dodoData.fromTokenDecimals}`).times(dodoData.fromTokenPrice).toString(10)
+                        format: (route, { crossChainParamsData }) => {
+                            return new BigNumber(crossChainParamsData.fromAmount).times(route.txData.fee).div(`1e${crossChainParamsData.fromTokenDecimals}`).times(crossChainParamsData.fromTokenPrice).toString(10)
                         }
                     },
                     crossChainFee: {
-                        format: (route, { dodoData }) => {
-                            return new BigNumber(route.txData.chainFee).times(dodoData.toTokenPrice).toString(10)
+                        format: (route, { crossChainParamsData }) => {
+                            return new BigNumber(route.txData.chainFee).times(crossChainParamsData.toTokenPrice).toString(10)
                         }
                     },
                     otherFee: '0',
@@ -68,24 +85,24 @@ const squidConfig: CrossChainConfig = {
                 otherPayOut: '0',
                 interfaceParamData: {
                     equipmentNo: {
-                        format: (_, { dodoData }) => dodoData.fromAddress.substring(0, 32)
+                        format: (_, { crossChainParamsData }) => crossChainParamsData.fromAddress.substring(0, 32)
                     },
                     sourceFlag: "DODO",
                     fromTokenAddress: {
-                        format: (_, { dodoData }) => {
-                            return dodoData.fromTokenAddress.toLowerCase() === '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ? '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' : dodoData.fromTokenAddress
+                        format: (_, { crossChainParamsData }) => {
+                            return crossChainParamsData.fromTokenAddress.toLowerCase() === '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ? '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' : crossChainParamsData.fromTokenAddress
                         }
                     },
                     toTokenAddress: {
-                        format: (_, { dodoData }) => {
-                            return dodoData.toTokenAddress.toLowerCase() === '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ? '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' : dodoData.toTokenAddress
+                        format: (_, { crossChainParamsData }) => {
+                            return crossChainParamsData.toTokenAddress.toLowerCase() === '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ? '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' : crossChainParamsData.toTokenAddress
                         }
                     },
                     fromAddress: {
-                        format: (_, { dodoData }) => dodoData.fromAddress
+                        format: (_, { crossChainParamsData }) => crossChainParamsData.fromAddress
                     },
                     toAddress: {
-                        format: (_, { dodoData }) => dodoData.toAddress
+                        format: (_, { crossChainParamsData }) => crossChainParamsData.toAddress
                     },
                     fromTokenChain: {
                         format: (_, { beforeResult }) => beforeResult.fromChainInfo.chain
@@ -122,7 +139,7 @@ const squidConfig: CrossChainConfig = {
             url: `${serverHost}/api/sswap/swap`,
             method: 'post',
             requestAfter: (res) => {
-                if (res.resCode !== 100) throw new Error('失败2' + res.resMsg)
+                if (res.resCode !== 100) throw new CrossChainBusinessException(errorCodes.ERROR);
                 return res.data;
             },
             responseMapping: {
@@ -134,7 +151,7 @@ const squidConfig: CrossChainConfig = {
             url: `${serverHost}/api/exchangeRecord/updateDataAndStatus`,
             method: 'post',
             requestAfter: (res) => {
-                if (res.resCode !== 100) throw new Error('失败3-' + res.resMsg)
+                if (res.resCode !== 100) throw new CrossChainBusinessException(errorCodes.ERROR);
                 return res.data;
             },
             before: async (params) => {
@@ -169,11 +186,11 @@ const squidConfig: CrossChainConfig = {
             url: `${serverHost}/api/exchangeRecord/getTransDataById`,
             method: 'post',
             after: (error, returnData) => {
-                // if (error) throw BusinessException(errorCodes.ERROR.code, error.message);
+                if (error) error;
                 return returnData;
             },
             requestAfter: (res) => {
-                if (res.resCode !== 100) throw new Error('失败4' + res.resMsg)
+                if (res.resCode !== 100) throw new CrossChainBusinessException(errorCodes.ERROR);
                 return res.data;
             },
             requestMapping: {
@@ -201,7 +218,7 @@ const squidConfig: CrossChainConfig = {
             url: `${serverHost}/api/exchangeRecord/getToken`,
             method: 'post',
             requestAfter: (res) => {
-                if (res.resCode !== 100) throw new Error('失败5' + res.resMsg)
+                if (res.resCode !== 100) throw new CrossChainBusinessException(errorCodes.ERROR);
                 return res.data;
             },
             responseMapping: {
@@ -219,7 +236,8 @@ const squidConfig: CrossChainConfig = {
                 },
             }
         },
-    }
+    },
+    errorCodes
 }
 
 export default squidConfig;

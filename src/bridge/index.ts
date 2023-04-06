@@ -9,8 +9,6 @@ export const loadBridgeConfig = async (reload?: boolean) => {
     files = files.filter(s => s.indexOf('.') === -1);
     for (const fileName of files) {
         const configPath = __dirname + '/' + fileName + '/config';
-        // const exist = await fs.existsSync(configPath);
-        // if (exist) {
         try {
             const bridgeConfig = require(configPath).default;
             if (!bridgeConfig || !bridgeConfig.name) throw Error(`${fileName} 配置加载失败`)
@@ -18,8 +16,6 @@ export const loadBridgeConfig = async (reload?: boolean) => {
         } catch (error) {
             throw Error(`加载 ${fileName} 配置报错: ${JSON.stringify(error, Object.getOwnPropertyNames(error), 2)}`)
         }
-
-        // }
     }
 
     return configs;

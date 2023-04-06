@@ -5,6 +5,7 @@ export type CrossChainParamsData = {
     fromTokenAddress: string, // 来源token地址
     fromTokenDecimals: number,
     fromTokenPrice: string,
+    fromPlatformTokenPrice: string,
     toChainId: number, // 目标链
     toTokenAddress: string, // 目标token 地址
     toTokenDecimals: number,
@@ -12,13 +13,24 @@ export type CrossChainParamsData = {
     fromAddress: string, // 来源用户地址
     toAddress: string, // 目标用户地址
     slippage: number,
-    // fromHash?: string
+    fromHash?: string
 };
+
+export type ErrorCodes = {
+    [key: string]: ErrorCode
+};
+
+export type ErrorCode = {
+    code: string,
+    message: string
+};
+
 
 
 export type CrossChainConfig = {
     name: string,
-    apiInterface: CrossChainApiInterface
+    apiInterface: CrossChainApiInterface,
+    errorCodes?: ErrorCodes
 };
 
 export type CrossChainApiInterface = {
@@ -27,6 +39,7 @@ export type CrossChainApiInterface = {
     tokenList: TokenListInterface,
     buildTransactionData?: BuildTransactionDataInterface,
     createOrder?: CreateOrderInterface,
+    health?: HealthInterface,
 };
 
 
@@ -34,9 +47,9 @@ export type CrossChainConfigInterface = {
     url: string,
     method: 'get' | 'post' | 'put',
     headers?: { [key: string]: any }
-    before?: (dodoData: CrossChainParamsData) => any,
+    before?: (crossChainParamsData: CrossChainParamsData & { [key: string]: any }) => any,
     requestAfter: (res: any) => any,
-    after?: <T>(error: Error, body: T | null) => T | null,
+    after?: <T>(error: Error, body: T | null) => T | ErrorCode | null,
     requestMapping?: CrossChainConfigField,
     responseMapping?: CrossChainConfigField,
 };
@@ -45,7 +58,7 @@ export type FieldMapping = {
     field?: string,
     type?: 'number' | 'string',
     defaultValue?: any,
-    format?: (data: CrossChainParamsData & { [key: string]: any }, otherData: { dodoData: CrossChainParamsData, beforeResult: any }) => any
+    format?: (data: CrossChainParamsData & { [key: string]: any }, otherData: { crossChainParamsData: CrossChainParamsData, beforeResult: any }) => any
 };
 
 export type Field = FieldMapping | string | number | boolean | CrossChainConfigField
@@ -57,7 +70,6 @@ export type CrossChainConfigField = {
 // route
 export interface RouteInterface extends CrossChainConfigInterface {
     requestMapping: CrossChainConfigField,
-    // after?: <RouteResponse>(error: Error, body: RouteResponse | null) => RouteResponse,
     responseMapping: { [T in keyof RouteResponse]: Field }
 }
 
@@ -80,7 +92,6 @@ export type RouteResponse = {
 
 export interface BuildTransactionDataInterface extends CrossChainConfigInterface {
     requestMapping: CrossChainConfigField,
-    // after?: (error: Error, body: BuildTransactionDataResponse) => BuildTransactionDataResponse,
     responseMapping: { [T in keyof BuildTransactionDataResponse]: Field },
 }
 
@@ -93,14 +104,13 @@ export type BuildTransactionDataResponse = {
 
 export interface StatusInterface extends CrossChainConfigInterface {
     requestMapping: CrossChainConfigField,
-    // after?: (error: Error, body: StatusResponse) => StatusResponse,
     responseMapping: {
         toHash: Field,
         statusInfo: {
             status: Field,
             subStatus?: Field,
             message?: Field
-        } | { format?: (data: any, otherData: { dodoData: CrossChainParamsData, beforeResult: any }) => StatusInfo }
+        } | { format?: (data: any, otherData: { crossChainParamsData: CrossChainParamsData, beforeResult: any }) => StatusInfo }
     },
 }
 
@@ -119,7 +129,6 @@ export type StatusInfo = {
 
 export interface CreateOrderInterface extends CrossChainConfigInterface {
     requestMapping: CrossChainConfigField,
-    // after?: (error: Error) => void,
     responseMapping?: CreateOrderResponse,
 }
 
@@ -132,7 +141,6 @@ export type CreateOrderResponse = {
 
 export interface TokenListInterface extends CrossChainConfigInterface {
     requestMapping?: CrossChainConfigField,
-    // after?: (error: Error, body: TokenListResponse) => TokenListResponse,
     responseMapping: { [T in keyof TokenListResponse]: Field },
 }
 
@@ -144,5 +152,18 @@ export type TokenListResponse = {
         symbol: string,
         decimals: number,
         logoImg: string
-    },
+    }
+}
+
+
+// createOrder
+
+export interface HealthInterface extends CrossChainConfigInterface {
+    requestMapping?: CrossChainConfigField,
+    responseMapping?: { [T in keyof HealthResponse]: Field },
+}
+
+export type HealthResponse = {
+    isAvailable: boolean,
+    description?: string
 }

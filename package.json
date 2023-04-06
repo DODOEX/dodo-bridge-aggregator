@@ -9,7 +9,8 @@
   "scripts": {
     "build": "tsc --project tsconfig.build.json",
     "release": "npm run build && npm publish",
-    "test": "jest  --runInBand --forceExit --colors"
+    "test": "jest  --runInBand --forceExit --colors",
+    "test:cov": "jest --coverage"
   },
   "devDependencies": {
     "@types/jest": "^29.5.0",
@@ -36,9 +37,9 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "src/**/*.ts"
     ],
-    "coverageDirectory": "../coverage",
+    "coverageDirectory": "./coverage",
     "testEnvironment": "node"
   }
 }

@@ -1,9 +1,49 @@
-import { CrossChainConfigField, CrossChainConfigInterface, FieldMapping } from './../types/index';
+import { CrossChainConfigField, CrossChainConfigInterface, ErrorCode, FieldMapping } from './../types/index';
 
 
 import axios from 'axios';
 import { get } from 'lodash';
 import { CrossChainParamsData } from '../types';
+import { CrossChainBusinessException } from '../exception';
+
+
+export function _configMappingConvertString(data: CrossChainParamsData & { [key: string]: any }, dataKeys: string[], dataMappingValue: string) {
+    if (dataKeys.includes(dataMappingValue)) {
+        return data[dataMappingValue];
+    } else if (get(data, dataMappingValue) !== undefined) {
+        return get(data, dataMappingValue);
+    } else {
+        return dataMappingValue;
+    }
+}
+
+export async function _configMappingConvertObject(data: CrossChainParamsData & { [key: string]: any }, dataKeys: string[], dataMappingValue: FieldMapping | CrossChainConfigField, otherData: any) {
+    const { field, type, defaultValue, format } = dataMappingValue as FieldMapping;
+    if (field || defaultValue !== undefined || format) {
+        if (format) {
+            return format(data, otherData)
+        } else if (field && dataKeys.includes(field)) {
+            if (type) {
+                return _formatType(type, data[field])
+            } else {
+                return data[field];
+            }
+        } else if (defaultValue !== undefined) {
+            return defaultValue;
+        }
+    } else {
+        return configMappingConvert(data, dataMappingValue as CrossChainConfigField, otherData)
+    }
+}
+
+export async function _formatType(type: 'string' | 'number', str: any) {
+    if (typeof str !== 'string' && typeof str !== 'number') return str;
+    if (type === 'number') {
+        return Number(str)
+    } else {
+        return String(str);
+    }
+}
 
 /**
  * 配置数据映射转换方法
@@ -12,89 +52,76 @@ import { CrossChainParamsData } from '../types';
  * @param {*} otherData 其他数据体
  * @returns 
  */
-export async function configMappingConvert(data: any, dataMapping: CrossChainConfigField | undefined, otherData: any) {
+export async function configMappingConvert(data: CrossChainParamsData & { [key: string]: any }, dataMapping: CrossChainConfigField | undefined, otherData: any) {
     if (!data || !dataMapping) return null;
     const returnData: any = {}
     const dataKeys = Object.keys(data);
     for (const key of Object.keys(dataMapping)) {
         const dataMappingValue = dataMapping[key];
         if (typeof dataMappingValue === 'string') {
-            if (dataKeys.includes(dataMappingValue)) {
-                returnData[key] = data[dataMappingValue];
-            } else if (get(data, dataMappingValue) !== undefined) {
-                returnData[key] = get(data, dataMappingValue);
-            } else {
-                returnData[key] = dataMappingValue;
-            }
+            returnData[key] = _configMappingConvertString(data, dataKeys, dataMappingValue);
         } else if (Object.prototype.toString.call(dataMappingValue) === '[object Object]') {
-            const { field, type, defaultValue, format } = dataMappingValue as FieldMapping;
-            if (field || defaultValue !== undefined || format) {
-                if (format) {
-                    returnData[key] = await format(data, otherData)
-                }
-                else if (field && dataKeys.includes(field)) {
-                    returnData[key] = data[field];
-                }
-                else if (defaultValue !== undefined) {
-                    returnData[key] = defaultValue;
-                }
-            } else {
-                returnData[key] = await configMappingConvert(data, dataMappingValue as CrossChainConfigField, otherData)
-            }
-        } else if (Object.prototype.toString.call(dataMappingValue) === '[object Array]') {
-
+            returnData[key] = await _configMappingConvertObject(data, dataKeys, dataMappingValue as FieldMapping | CrossChainConfigField, otherData);
         } else {
             returnData[key] = dataMappingValue;
         }
     }
-
     return returnData;
 }
 
 
 
-export async function request(url: string, method: string, params: any, requestAfter: Function, headers?: { [key: string]: any },) {
+export async function request(url: string, method: string, params: any, requestAfter: Function, headers?: { [key: string]: any }) {
+    params = params || {}
     headers = headers || {}
+    method = method.toLocaleLowerCase();
     let res;
-    if (method.toLocaleLowerCase() === 'get') {
+    if (method === 'get') {
         res = await axios.get(url, { params, headers });
     } else if (method.toLocaleLowerCase() === 'post') {
         res = await axios.post(url, params, { headers });
     } else if (method.toLocaleLowerCase() === 'put') {
         res = await axios.put(url, params, { headers });
     } else {
-        res = await (axios as any)[method.toLocaleLowerCase()](url, params, { headers });
+        throw new Error(`【request】"${method}" method not support`)
     }
-    if (res.status !== 200) throw Error('失败')
+    if (res.status !== 200) throw Error(`【request】 api return status ${res.status}`)
     return requestAfter(res.data);
 }
 
 
-export async function getData<T>(dodoData: CrossChainParamsData & { [key: string]: any }, apiInterface: CrossChainConfigInterface, interfaceParamData?: { [key: string]: any }): Promise<T | null> {
+export async function getData<T>(crossChainParamsData: CrossChainParamsData & { [key: string]: any }, apiInterface: CrossChainConfigInterface, interfaceParamData?: { [key: string]: any }): Promise<T | ErrorCode | null> {
     const { url, method, requestMapping, responseMapping, headers, before, requestAfter, after } = apiInterface;
     if (interfaceParamData && Object.prototype.toString.call(interfaceParamData) === '[object Object]') {
-        dodoData = Object.assign(dodoData, interfaceParamData);
+        crossChainParamsData = Object.assign(crossChainParamsData, interfaceParamData);
     }
     let error;
-    let returnData: T | null = null;
+    let appingConvertResult: T | null = null;
     try {
-        const beforeResult = before ? await beforeHandle(before, dodoData) : null;
-        const requestData = await configMappingConvert(dodoData, requestMapping, { beforeResult });
-        const responseData = await request(url, method, requestData || {}, requestAfter, headers);
-        returnData = await configMappingConvert(responseData, responseMapping, { dodoData, beforeResult, interfaceParamData });
+        const beforeResult = before ? await _beforeHandle(before, crossChainParamsData) : null;
+        const requestData = await configMappingConvert(crossChainParamsData, requestMapping, { beforeResult });
+        const responseData = await request(url, method, requestData, requestAfter, headers);
+        appingConvertResult = await configMappingConvert(responseData, responseMapping, { crossChainParamsData, beforeResult, interfaceParamData });
     } catch (e) {
         error = e;
     } finally {
         if (typeof after === 'function') {
-            returnData = await after<T>(error as Error, returnData);
+            try {
+                return after<T>(error as Error, appingConvertResult);
+            } catch (err) {
+                error = err;
+            }
+        }
+        if (error instanceof CrossChainBusinessException) {
+            return { code: error.code, message: error.message }
         } else if (!!error) {
             throw error;
         }
     }
-    return returnData;
+    return appingConvertResult;
 }
 
-const beforeHandle = async (fun: Function, data: any) => {
+export const _beforeHandle = async (fun: Function, data: any) => {
     if (typeof fun === 'function') return fun(data);
     return null;
 }
