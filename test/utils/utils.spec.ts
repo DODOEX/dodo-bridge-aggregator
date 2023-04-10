@@ -117,7 +117,7 @@ describe("_configMappingConvertObject method test", () => {
     const dataMappingValue: FieldMapping = {
       format: data => data.slippage * 100
     };
-    const result = await utils._configMappingConvertObject(crossChainParamsData, Object.keys(crossChainParamsData), dataMappingValue, {});
+    const result = await utils._configMappingConvertObject(crossChainParamsData, Object.keys(crossChainParamsData), dataMappingValue, {} as any);
     expect(result).toEqual(crossChainParamsData.slippage * 100);
   });
 
@@ -125,7 +125,7 @@ describe("_configMappingConvertObject method test", () => {
     const dataMappingValue: FieldMapping = {
       field: 'fromAmount'
     };
-    const result = await utils._configMappingConvertObject(crossChainParamsData, Object.keys(crossChainParamsData), dataMappingValue, {});
+    const result = await utils._configMappingConvertObject(crossChainParamsData, Object.keys(crossChainParamsData), dataMappingValue, {} as any);
     expect(result).toEqual(crossChainParamsData.fromAmount);
   });
 
@@ -133,7 +133,7 @@ describe("_configMappingConvertObject method test", () => {
     const dataMappingValue: FieldMapping = {
       field: 'fromAmount', type: 'number'
     };
-    const result = await utils._configMappingConvertObject(crossChainParamsData, Object.keys(crossChainParamsData), dataMappingValue, {});
+    const result = await utils._configMappingConvertObject(crossChainParamsData, Object.keys(crossChainParamsData), dataMappingValue, {} as any);
     expect(result).toEqual(Number(crossChainParamsData.fromAmount));
   });
 
@@ -141,7 +141,7 @@ describe("_configMappingConvertObject method test", () => {
     const dataMappingValue: FieldMapping = {
       defaultValue: 'DODO'
     };
-    const result = await utils._configMappingConvertObject(crossChainParamsData, Object.keys(crossChainParamsData), dataMappingValue, {});
+    const result = await utils._configMappingConvertObject(crossChainParamsData, Object.keys(crossChainParamsData), dataMappingValue, {} as any);
     expect(result).toEqual(dataMappingValue.defaultValue);
   });
 
@@ -151,7 +151,7 @@ describe("_configMappingConvertObject method test", () => {
       fromAmountTest: 'fromAmount',
       defaultValueTest: 'DODO'
     };
-    const result = await utils._configMappingConvertObject(crossChainParamsData, Object.keys(crossChainParamsData), dataMappingValue, {});
+    const result = await utils._configMappingConvertObject(crossChainParamsData, Object.keys(crossChainParamsData), dataMappingValue, {} as any);
     expect(!!result).toEqual(true);
     expect(result.fromChainIdTest).toEqual(String(crossChainParamsData.fromChainId));
     expect(result.fromAmountTest).toEqual(crossChainParamsData.fromAmount);
@@ -189,6 +189,7 @@ describe("configMappingConvert method test", () => {
     fromTokenAddress: '0x55d398326f99059ff775485246999027b3197955',
     fromTokenDecimals: 18,
     fromTokenPrice: '1',
+    fromPlatformTokenPrice: '300',
     toChainId: 137,
     toTokenAddress: '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
     toTokenDecimals: 6,
@@ -235,7 +236,7 @@ describe("configMappingConvert method test", () => {
   });
 
   it("should return corresponding value", async () => {
-    const result = await utils.configMappingConvert(crossChainParamsData, undefined, {});
+    const result = await utils.configMappingConvert(crossChainParamsData, undefined, {} as any);
     expect(result).toEqual(null);
   });
 
@@ -267,6 +268,7 @@ describe("getData method test", () => {
     fromTokenAddress: '0x55d398326f99059ff775485246999027b3197955',
     fromTokenDecimals: 18,
     fromTokenPrice: '1',
+    fromPlatformTokenPrice: '300',
     toChainId: 137,
     toTokenAddress: '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
     toTokenDecimals: 6,

@@ -18,7 +18,7 @@ const errorCodes = {
     ERROR: { code: 'ERROR', message: 'unknown error' },
     NOT_SUPPORT: { code: 'NOT_SUPPORT', message: 'NOT SUPPORT' },
 }
-const squidConfig: CrossChainConfig = {
+const swftConfig: CrossChainConfig = {
     name: 'swft_test',
     apiInterface: {
         health: {
@@ -44,7 +44,10 @@ const squidConfig: CrossChainConfig = {
                 if (!fromChainInfo || !toChainInfo) throw new CrossChainBusinessException(errorCodes.NOT_SUPPORT);
                 return { fromChainInfo, toChainInfo };
             },
-            // after: () => { },
+            after: (err, res) => {
+                if (err) throw new CrossChainBusinessException(errorCodes.ERROR);
+                return res;
+            },
             requestAfter: (res) => {
                 if (res.resCode !== 100) throw new CrossChainBusinessException(errorCodes.ERROR);
                 return res.data;
@@ -186,7 +189,7 @@ const squidConfig: CrossChainConfig = {
             url: `${serverHost}/api/exchangeRecord/getTransDataById`,
             method: 'post',
             after: (error, returnData) => {
-                if (error) error;
+                if (error) throw error;
                 return returnData;
             },
             requestAfter: (res) => {
@@ -240,4 +243,4 @@ const squidConfig: CrossChainConfig = {
     errorCodes
 }
 
-export default squidConfig;
+export default swftConfig;

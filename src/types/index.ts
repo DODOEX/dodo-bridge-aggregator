@@ -16,6 +16,8 @@ export type CrossChainParamsData = {
     fromHash?: string
 };
 
+export type OtherData = { crossChainParamsData: CrossChainParamsData, beforeResult?: any, interfaceParamData?: any };
+
 export type ErrorCodes = {
     [key: string]: ErrorCode
 };
@@ -24,8 +26,6 @@ export type ErrorCode = {
     code: string,
     message: string
 };
-
-
 
 export type CrossChainConfig = {
     name: string,
@@ -49,7 +49,7 @@ export type CrossChainConfigInterface = {
     headers?: { [key: string]: any }
     before?: (crossChainParamsData: CrossChainParamsData & { [key: string]: any }) => any,
     requestAfter: (res: any) => any,
-    after?: <T>(error: Error, body: T | null) => T | ErrorCode | null,
+    after?: <T>(error: Error, body: T | null) => T | null,
     requestMapping?: CrossChainConfigField,
     responseMapping?: CrossChainConfigField,
 };
@@ -58,7 +58,7 @@ export type FieldMapping = {
     field?: string,
     type?: 'number' | 'string',
     defaultValue?: any,
-    format?: (data: CrossChainParamsData & { [key: string]: any }, otherData: { crossChainParamsData: CrossChainParamsData, beforeResult: any }) => any
+    format?: (data: CrossChainParamsData & { [key: string]: any }, otherData: OtherData) => any
 };
 
 export type Field = FieldMapping | string | number | boolean | CrossChainConfigField
@@ -70,22 +70,24 @@ export type CrossChainConfigField = {
 // route
 export interface RouteInterface extends CrossChainConfigInterface {
     requestMapping: CrossChainConfigField,
-    responseMapping: { [T in keyof RouteResponse]: Field }
+    responseMapping: { [T in keyof RouteResponse]: Field } & { fee: { [T in keyof RouteFeeResponse]: Field }, transactionData?: { [T in keyof BuildTransactionDataResponse]: Field } }
 }
 
 export type RouteResponse = {
     depositContract: string,
     toAmount: string,
     executionDuration?: number,
-    fee: {
-        swapFee?: string,
-        destinationGasFee: string,
-        crossChainFee?: string,
-        otherFee?: string,
-    },
+    fee: RouteFeeResponse,
     otherPayOut: string,
     transactionData?: BuildTransactionDataResponse
     interfaceParamData?: CrossChainConfigField
+}
+
+export type RouteFeeResponse = {
+    swapFee?: string,
+    destinationGasFee: string,
+    crossChainFee?: string,
+    otherFee?: string,
 }
 
 // buildTransactionData
@@ -106,11 +108,7 @@ export interface StatusInterface extends CrossChainConfigInterface {
     requestMapping: CrossChainConfigField,
     responseMapping: {
         toHash: Field,
-        statusInfo: {
-            status: Field,
-            subStatus?: Field,
-            message?: Field
-        } | { format?: (data: any, otherData: { crossChainParamsData: CrossChainParamsData, beforeResult: any }) => StatusInfo }
+        statusInfo: StatusInfo | { format?: (data: CrossChainParamsData & { [key: string]: any }, otherData: OtherData) => StatusInfo }
     },
 }
 

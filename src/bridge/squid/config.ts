@@ -37,12 +37,13 @@ const squidConfig: CrossChainConfig = {
                     format: (params) => params.slippage * 100
                 },
                 enableForecall: true,
-                quoteOnly: false
+                quoteOnly: false 
             },
             responseMapping: {
                 depositContract: 'transactionRequest.targetAddress',
                 toAmount: 'estimate.toAmount',
                 fee: {
+                    destinationGasFee: '0',
                     otherFee: {
                         format: async (data, { crossChainParamsData }) => {
                             return new BigNumber(data.feeCostAll).div(1e18).times(crossChainParamsData.fromPlatformTokenPrice).toString(10);
