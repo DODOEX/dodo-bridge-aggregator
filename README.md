@@ -399,7 +399,7 @@ type CrossChainParamsData = {
 
 调用 src/index.ts 中的方法测试配置
 
-### 1.route 和 buildTransactionData 接口配置测试
+### 1. route 和 buildTransactionData 接口配置测试
 
 ```js
 import {
@@ -445,7 +445,7 @@ console.log("transactionInfo:", transactionInfo);
 // ...
 ```
 
-### 2.createOrder、status、tokenList、health 接口配置测试
+### 2. createOrder、status、tokenList、health 接口配置测试
 
 ```js
 import { createOrder, getStatus, getTokenList, health } from "../src/index";
