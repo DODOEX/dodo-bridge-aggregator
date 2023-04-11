@@ -3,22 +3,22 @@
 - [介绍](https://github.com/DODOEX/dodo-bridge-aggregator#%E4%BB%8B%E7%BB%8D)
 - [克隆代码](https://github.com/DODOEX/dodo-bridge-aggregator#%E5%85%8B%E9%9A%86%E4%BB%A3%E7%A0%81)
 - [配置](https://github.com/DODOEX/dodo-bridge-aggregator#%E9%85%8D%E7%BD%AE)
-  - [一、创建配置文件](https://github.com/DODOEX/dodo-bridge-aggregator#%E4%B8%80%E5%88%9B%E5%BB%BA%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
-  - [二、添加配置](https://github.com/DODOEX/dodo-bridge-aggregator#%E4%BA%8C%E6%B7%BB%E5%8A%A0%E9%85%8D%E7%BD%AE)
-    - [1.配置数据](https://github.com/DODOEX/dodo-bridge-aggregator#1%E9%85%8D%E7%BD%AE%E6%95%B0%E6%8D%AE)
-    - [2.接口说明](https://github.com/DODOEX/dodo-bridge-aggregator#2%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E)
-      - [1. route](https://github.com/DODOEX/dodo-bridge-aggregator#1-route)
-      - [2. status](https://github.com/DODOEX/dodo-bridge-aggregator#2-status)
-      - [3. tokenList](https://github.com/DODOEX/dodo-bridge-aggregator#3-tokenlist)
-      - [4. buildTransactionData](https://github.com/DODOEX/dodo-bridge-aggregator#4-buildtransactiondata)
-      - [5. createOrder](https://github.com/DODOEX/dodo-bridge-aggregator#5-createorder)
-      - [6. health](https://github.com/DODOEX/dodo-bridge-aggregator#6-health)
-  - [三、测试配置](https://github.com/DODOEX/dodo-bridge-aggregator#%E4%B8%89%E6%B5%8B%E8%AF%95%E9%85%8D%E7%BD%AE)
-  - [四、提交合并配置](https://github.com/DODOEX/dodo-bridge-aggregator#%E5%9B%9B%E6%8F%90%E4%BA%A4%E5%90%88%E5%B9%B6%E9%85%8D%E7%BD%AE)
+  - [1. 创建配置文件](https://github.com/DODOEX/dodo-bridge-aggregator#%E4%B8%80%E5%88%9B%E5%BB%BA%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
+  - [2. 添加配置](https://github.com/DODOEX/dodo-bridge-aggregator#%E4%BA%8C%E6%B7%BB%E5%8A%A0%E9%85%8D%E7%BD%AE)
+    - [a. 配置数据](https://github.com/DODOEX/dodo-bridge-aggregator#1%E9%85%8D%E7%BD%AE%E6%95%B0%E6%8D%AE)
+    - [b. 接口说明](https://github.com/DODOEX/dodo-bridge-aggregator#2%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E)
+      - [i. route](https://github.com/DODOEX/dodo-bridge-aggregator#1-route)
+      - [ii. status](https://github.com/DODOEX/dodo-bridge-aggregator#2-status)
+      - [iii. tokenList](https://github.com/DODOEX/dodo-bridge-aggregator#3-tokenlist)
+      - [iv. buildTransactionData](https://github.com/DODOEX/dodo-bridge-aggregator#4-buildtransactiondata)
+      - [v. createOrder](https://github.com/DODOEX/dodo-bridge-aggregator#5-createorder)
+      - [vi. health](https://github.com/DODOEX/dodo-bridge-aggregator#6-health)
+  - [3. 测试配置](https://github.com/DODOEX/dodo-bridge-aggregator#%E4%B8%89%E6%B5%8B%E8%AF%95%E9%85%8D%E7%BD%AE)
+  - [4. 提交合并配置](https://github.com/DODOEX/dodo-bridge-aggregator#%E5%9B%9B%E6%8F%90%E4%BA%A4%E5%90%88%E5%B9%B6%E9%85%8D%E7%BD%AE)
 
 # 介绍
 
-该项目用于聚合第三方跨链桥，跨链桥只需要在这里提供一个配置文件，这个配置文件主要包括接口的配置和数据转换，然后每个接口返回相应的数据来实现聚合。配置准备好后就可以在 [提交合并配置](https://github.com/DODOEX/dodo-bridge-aggregator#%E5%9B%9B%E3%80%81%E6%8F%90%E4%BA%A4%E5%90%88%E5%B9%B6%E9%85%8D%E7%BD%AE) 中提交 merge
+该项目旨在聚合第三方跨链桥。跨链桥只需提供一个配置文件，该配置文件涵盖接口配置和数据转换。每个接口将返回相应的数据，以实现聚合。一旦配置完成，即可在“[提交合并配置](https://github.com/DODOEX/dodo-bridge-aggregator#%E5%9B%9B%E3%80%81%E6%8F%90%E4%BA%A4%E5%90%88%E5%B9%B6%E9%85%8D%E7%BD%AE)”中提交合并。
 
 # 克隆代码
 
@@ -28,16 +28,16 @@ $ git clone https://github.com/DODOEX/dodo-bridge-aggregator.git
 
 # 配置
 
-## 一、创建配置文件
+## 1. 创建配置文件
 
 ```bash
 $ mkdir src/bridge/[bridgeName]
 $ touch src/bridge/[bridgeName]/config.ts
 ```
 
-## 二、添加配置
+## 2. 添加配置
 
-### 1.配置数据
+### a. 配置数据
 
 > 复制下面的示例配置内容到 【src/bridge/[bridgeName]/config.ts】 文件中，然后修改配置中的数据。  
 > 在示例配置中主要有 4 个接口配置，分别是 route 、buildTransactionData、status、tokenList 等接口配置。所以需要修改示例配置中的这 4 个接口并且返回相应的数据。  
@@ -63,34 +63,34 @@ const errorCodes = {
 };
 const bridgeNameConfig: CrossChainConfig = {
   name: "bridge_name", // 桥名称
+  //  API 接口配置
   apiInterface: {
-    //  API 接口配置
+    // 路由接口(必填)
     route: {
-      // 路由接口(必填)
       url: `${serverHost}/api/route`, // 接口请求地址
       method: "get", // 接口类型 get/post/put
+      // 开始执行之前调用该函数
       before: async (params: CrossChainParamsData) => {
-        // 开始执行之前调用该函数
         const fromAmountUSD = new BigNumber(params.fromAmount)
           .div(10 ** params.fromTokenDecimals)
           .times(params.fromTokenPrice);
-        return { fromAmountUSD }; // 这里返回的数据在 format 中可以使用
+        return { fromAmountUSD }; //  这里返回的数据在‘requestMapping’和‘responseMapping’ 中的 "format" 函数中可以使用
       },
+      // 执行完成之后调用该函数
       after: (err, res) => {
-        // 执行完成之后调用该函数
-        // 这里需要处理下是否存在error 情况
+        // 需要处理下error
         if (err) throw new CrossChainBusinessException(errorCodes.ERROR);
         return res;
       },
+      // 请求接口之后调用该函数
       requestAfter: (res) => {
-        // 请求接口之后调用该函数
-        // 这里需求处理下接口请求是否返回正常结果，否侧需要抛出异常
+        // 检查是否返回正常结果数据
         if (res.code !== 200)
           throw new CrossChainBusinessException(errorCodes.ERROR);
         return res.data;
       },
+      // 接口请求参数数据放到“requestMapping”中，字段值会从“CrossChainParamsData”参数中做映射处理
       requestMapping: {
-        // 接口请求参数数据
         fromChain: "fromChainId",
         fromAmount: {
           format: (_, { beforeResult }) => beforeResult.fromAmountUSD,
@@ -98,14 +98,14 @@ const bridgeNameConfig: CrossChainConfig = {
         toChain: { field: "toChain", type: "string" },
         // other params
       },
+      // 接口返回数据放到“responseMapping”中，字段值会从“接口响应数据”做映射
       responseMapping: {
-        // 接口响应结果数据
         depositContract: "data.contractAddress", // 存款合约地址
         toAmount: "data.amountOutMin", // 目标链到账金额，单位（wei）
         fee: {
-          swapFee: "0", // swap fee (USD)
+          swapFee: "0", // swap fee ，单位(USD)
           destinationGasFee: {
-            // 目标链 gas fee (USD)
+            //目标链 gas fee ，单位(USD)
             format: (route, { crossChainParamsData }) => {
               return new BigNumber(route.data.fee)
                 .div(10 ** crossChainParamsData.toTokenDecimals)
@@ -113,22 +113,24 @@ const bridgeNameConfig: CrossChainConfig = {
                 .toString(10);
             },
           },
-          crossChainFee: "0", // 跨链 fee (USD)
-          otherFee: "0", // 其它 fee (USD)
+          crossChainFee: "0", // 跨链 fee ，单位(USD)
+          otherFee: "0", // 其它 fee ，单位(USD)
         },
-        // transactionData: {  // 如果在 route 接口中返回了 transactionData 数据，则可以不用在提供 buildTransactionData 接口
+        // 如果在 route 接口中返回了 transactionData 数据，则可以不用在提供 buildTransactionData 接口
+        // transactionData: {
         //     data: 'data.transactionData',
         //     value: 'data.value',
         // },
-        otherPayOut: "0", // 发起交易上链时额外从钱包扣除的费用（比如跨链平台将会使用“来源链平台币”提前预支一笔费用，该笔费用定义为“otherPayOut”, 单位USD)
+        // 发起交易上链时额外从钱包扣除的费用（比如跨链平台将会使用“来源链平台币”提前预支一笔费用，该笔费用定义为“otherPayOut”, 单位USD)
+        otherPayOut: "0",
+        // 如果需要保存路由接口中一些数据以便后续几个接口使用可以放到 'interfaceParamData' 中
         interfaceParamData: {
-          // 如果需要保存路由接口中一些数据以便后续几个接口使用可以放到 'interfaceParamData' 中
           routeId: "data.routeId",
         },
       },
     },
+    // 获取状态接口 (必填)
     status: {
-      // 获取状态接口 (必填)
       url: `${serverHost}/api/status`,
       method: "get",
       requestAfter: (res) => {
@@ -162,8 +164,8 @@ const bridgeNameConfig: CrossChainConfig = {
         },
       },
     },
+    // 获取支持跨链交易的token信息 (必填)
     tokenList: {
-      // 获取支持跨链交易的token信息 (必填)
       url: `${serverHost}/api/tokens`,
       method: "get",
       requestAfter: (res) => {
@@ -248,7 +250,7 @@ const bridgeNameConfig: CrossChainConfig = {
 export default bridgeNameConfig;
 ```
 
-### 2.接口说明
+### b. 接口说明
 
 - `name` 桥名称
 - `apiInterface` API 接口配置
@@ -273,7 +275,7 @@ export default bridgeNameConfig;
     ...
 - `errorCodes` 错误状态信息
 
-## 1. route
+## i. route
 
 用于查询路由，返回该路由的报价等信息
 
@@ -284,18 +286,18 @@ export default bridgeNameConfig;
 type CrossChainParamsData = {
   fromChainId: number, // 来源链
   fromAmount: string, // 来源金额
-  fromTokenAddress: string, // 来源token地址
-  fromTokenDecimals: number,
-  fromTokenPrice: string,
-  fromPlatformTokenPrice: string,
+  fromTokenAddress: string, // 来源 token 地址
+  fromTokenDecimals: number, // 来源 token decimals
+  fromTokenPrice: string, // 来源 token price
+  fromPlatformTokenPrice: string, // 来源 平台币 price
   toChainId: number, // 目标链
   toTokenAddress: string, // 目标token 地址
-  toTokenDecimals: number,
-  toTokenPrice: string,
+  toTokenDecimals: number, // 目标token decimals
+  toTokenPrice: string, // 目标token price
   fromAddress: string, // 来源用户地址
   toAddress: string, // 目标用户地址
-  slippage: number,
-  fromHash?: string,
+  slippage: number, // 滑点
+  fromHash?: string, // 来源链交易hash
 };
 ```
 
@@ -304,7 +306,7 @@ type CrossChainParamsData = {
 
 - `depositContract` 存款合约地址
 - `toAmount` 目标链到账金额，单位（wei）
-- `fee` 费用，包括 swap fee、目标链 gas fee、跨链 fee、其它 fee 四种费用，这里来源链(from chain)的 gas fee
+- `fee` 包括 swap fee、目标链 gas fee、跨链 fee、其它 fee 四种费用，不包括来源链的 gas fee
   - `swapFee` swap fee （单位 USD）
   - `destinationGasFee` 目标链 gas fee （单位 USD）
   - `crossChainFee` 跨链 fee （单位 USD）
@@ -312,7 +314,7 @@ type CrossChainParamsData = {
 - `otherPayOut` 发起交易上链时额外从钱包扣除的费用（比如跨链平台将会使用“来源链平台币”提前预支一笔费用，该笔费用定义为“otherPayOut”, 单位 USD)
 - `interfaceParamData` 如果需要保存路由接口中一些数据以便后续几个接口使用则可以放到 'interfaceParamData' 中
 
-## 2. status
+## ii. status
 
 获取跨链订单交易的状态
 
@@ -334,7 +336,7 @@ type CrossChainParamsData = {
     - NOT_FOUND NOT FOUND 状态 （交易 hash 不存在时的状态）
   - `bridgeResponseResult` 源第三方桥返回的相应数据
 
-## 3. tokenList
+## iii. tokenList
 
 需要返回第三方跨链桥支持哪些 token 交易
 
@@ -353,7 +355,7 @@ type CrossChainParamsData = {
   - `decimals`代币合约上的 decimals
   - `logoImg` 代币 logo 图标链接地址
 
-## 4. buildTransactionData
+## iv. buildTransactionData
 
 在 route 接口后会调用该接口拿到发送事物的数据
 
@@ -367,7 +369,7 @@ type CrossChainParamsData = {
 - `data` 上链 data 数据
 - `value` 上链 value 数据 （需要返回 16 精制）
 
-## 5. createOrder
+## v. createOrder
 
 在 buildTransactionData 接口后调用创建订单接口报错 hash 等数据
 
@@ -379,7 +381,7 @@ type CrossChainParamsData = {
 
 - `interfaceParamData` 如果需要保存一些数据可以放到这里
 
-## 6. health
+## vi. health
 
 在调用 route 接口前会调用 health 检查服务或路由是否可用
 
@@ -393,7 +395,7 @@ type CrossChainParamsData = {
 - `isAvailable` 是否监控
 - `description`描述
 
-## 三、测试配置
+## 3. 测试配置
 
 调用 src/index.ts 中的方法测试配置
 
@@ -409,17 +411,17 @@ import {
 
 const crossChainParamsData: CrossChainParamsData = {
   fromChainId: 56, // 来源链
-  fromAmount: "20000000000000000000", // 来源金额
-  fromTokenAddress: "0x55d398326f99059ff775485246999027b3197955", // 来源token地址
+  fromAmount: "20000000000000000000",
+  fromTokenAddress: "0x55d398326f99059ff775485246999027b3197955",
   fromTokenDecimals: 18,
   fromTokenPrice: "1",
-  fromPlatformTokenPrice: "300", // from chain 上的平台币价格（USD）
-  toChainId: 137, // 目标链
-  toTokenAddress: "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", // 目标token 地址
+  fromPlatformTokenPrice: "300",
+  toChainId: 137,
+  toTokenAddress: "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
   toTokenDecimals: 6,
   toTokenPrice: "1",
-  fromAddress: "0xd8C446197cA9eE5b6cFC212460C9C5b621a5e1F2", // 来源用户地址
-  toAddress: "0xd8C446197cA9eE5b6cFC212460C9C5b621a5e1F2", // 目标用户地址
+  fromAddress: "0xd8C446197cA9eE5b6cFC212460C9C5b621a5e1F2",
+  toAddress: "0xd8C446197cA9eE5b6cFC212460C9C5b621a5e1F2",
   slippage: 0.01,
 };
 const bridgeName = "swft_test";
@@ -465,6 +467,6 @@ const tokenListResult = await getTokenList(bridgeName, crossChainParamsData);
 const healthResult = await health(bridgeName, crossChainParamsData);
 ```
 
-## 四、提交合并配置
+## 4. 提交合并配置
 
-配置测试没有问题后就可以提交 merge 给我们，在 [https://github.com/DODOEX/dodo-bridge-aggregator/pulls](https://github.com/DODOEX/dodo-bridge-aggregator/pulls) 中提交合并请求，收到合并请求后我们会检查配置是否有问题，如果没有问题将会进行合并，然后在测试环境中进行测试。
+在完成配置测试后，您可以提交合并请求给我们。请确保请求包含正确的配置，并在 [https://github.com/DODOEX/dodo-bridge-aggregator/pulls](https://github.com/DODOEX/dodo-bridge-aggregator/pulls) 页面中提交。一旦我们收到您的请求，我们会进行检查，确保配置正确无误。如果一切顺利，我们会进行合并，并在测试环境中进行测试。
