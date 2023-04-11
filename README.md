@@ -1,3 +1,25 @@
+# 目录
+
+- [介绍](https://github.com/DODOEX/dodo-bridge-aggregator#%E4%BB%8B%E7%BB%8D)
+- [克隆代码](https://github.com/DODOEX/dodo-bridge-aggregator#%E5%85%8B%E9%9A%86%E4%BB%A3%E7%A0%81)
+- [配置](https://github.com/DODOEX/dodo-bridge-aggregator#%E9%85%8D%E7%BD%AE)
+  - [一、创建配置文件](https://github.com/DODOEX/dodo-bridge-aggregator#%E9%85%8D%E7%BD%AE)
+  - [二、添加配置](https://github.com/DODOEX/dodo-bridge-aggregator#%E4%BA%8C%E3%80%81%E6%B7%BB%E5%8A%A0%E9%85%8D%E7%BD%AE)
+    - [1.配置数据](https://github.com/DODOEX/dodo-bridge-aggregator#1%E9%85%8D%E7%BD%AE%E6%95%B0%E6%8D%AE)
+    - [2.接口说明](https://github.com/DODOEX/dodo-bridge-aggregator#2%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E)
+      - [1. route](https://github.com/DODOEX/dodo-bridge-aggregator#1-route)
+      - [2. status](https://github.com/DODOEX/dodo-bridge-aggregator#2-status)
+      - [3. tokenList](https://github.com/DODOEX/dodo-bridge-aggregator#3-tokenlist)
+      - [4. buildTransactionData](https://github.com/DODOEX/dodo-bridge-aggregator#4-buildtransactiondata)
+      - [5. createOrder](https://github.com/DODOEX/dodo-bridge-aggregator#5-createorder)
+      - [6. health](https://github.com/DODOEX/dodo-bridge-aggregator#6-health)
+  - [三、测试配置](https://github.com/DODOEX/dodo-bridge-aggregator#%E4%B8%89%E3%80%81%E6%B5%8B%E8%AF%95%E9%85%8D%E7%BD%AE)
+  - [四、提交合并配置](https://github.com/DODOEX/dodo-bridge-aggregator#%E5%9B%9B%E3%80%81%E6%8F%90%E4%BA%A4%E5%90%88%E5%B9%B6%E9%85%8D%E7%BD%AE)
+
+# 介绍
+
+该项目用于聚合第三方跨链桥，跨链桥只需要在这里提供一个配置文件，这个配置文件主要包括接口的配置和数据转换，然后每个接口返回相应的数据来实现聚合。配置准备好后就可以在 [提交合并配置](https://github.com/DODOEX/dodo-bridge-aggregator#%E5%9B%9B%E3%80%81%E6%8F%90%E4%BA%A4%E5%90%88%E5%B9%B6%E9%85%8D%E7%BD%AE) 中提交 merge
+
 # 克隆代码
 
 ```bash
@@ -98,7 +120,7 @@ const bridgeNameConfig: CrossChainConfig = {
         //     data: 'data.transactionData',
         //     value: 'data.value',
         // },
-        otherPayOut: "0", // 而外支持费用（比如跨链费是需要用'来源链平台币'支付一笔费用，那这笔费用就是'otherPayOut'） (USD)
+        otherPayOut: "0", // 发起交易上链时额外从钱包扣除的费用（比如跨链平台将会使用“来源链平台币”提前预支一笔费用，该笔费用定义为“otherPayOut”, 单位USD)
         interfaceParamData: {
           // 如果需要保存路由接口中一些数据以便后续几个接口使用可以放到 'interfaceParamData' 中
           routeId: "data.routeId",
@@ -251,7 +273,7 @@ export default bridgeNameConfig;
     ...
 - `errorCodes` 错误状态信息
 
-## 1.route
+## 1. route
 
 用于查询路由，返回该路由的报价等信息
 
@@ -287,10 +309,10 @@ type CrossChainParamsData = {
   - `destinationGasFee` 目标链 gas fee （单位 USD）
   - `crossChainFee` 跨链 fee （单位 USD）
   - `otherFee` 其它 fee （单位 USD）
-- `otherPayOut` 而外支持费用（比如跨链费是需要用'来源链平台币'支付一笔费用，那这笔费用就是'otherPayOut'） （单位 USD）
+- `otherPayOut` 发起交易上链时额外从钱包扣除的费用（比如跨链平台将会使用“来源链平台币”提前预支一笔费用，该笔费用定义为“otherPayOut”, 单位 USD)
 - `interfaceParamData` 如果需要保存路由接口中一些数据以便后续几个接口使用则可以放到 'interfaceParamData' 中
 
-## 2.status
+## 2. status
 
 获取跨链订单交易的状态
 
@@ -371,7 +393,7 @@ type CrossChainParamsData = {
 - `isAvailable` 是否监控
 - `description`描述
 
-## 3. 测试配置
+## 三. 测试配置
 
 调用 src/index.ts 中的方法测试配置
 
@@ -443,6 +465,6 @@ const tokenListResult = await getTokenList(bridgeName, crossChainParamsData);
 const healthResult = await health(bridgeName, crossChainParamsData);
 ```
 
-## 4. 合并配置
+## 四. 提交合并配置
 
-    在 https://github.com/DODOEX/dodo-bridge-aggregator/pulls 中提交合并请求，收到合并请求后我们会检查配置是否有问题，如果没有问题将会进行合并，然后在测试环境中测试。
+配置测试没有问题后就可以提交 merge 给我们，在 [https://github.com/DODOEX/dodo-bridge-aggregator/pulls](https://github.com/DODOEX/dodo-bridge-aggregator/pulls) 中提交合并请求，收到合并请求后我们会检查配置是否有问题，如果没有问题将会进行合并，然后在测试环境中进行测试。
