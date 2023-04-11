@@ -3,7 +3,7 @@
 - [介绍](https://github.com/DODOEX/dodo-bridge-aggregator#%E4%BB%8B%E7%BB%8D)
 - [克隆代码](https://github.com/DODOEX/dodo-bridge-aggregator#%E5%85%8B%E9%9A%86%E4%BB%A3%E7%A0%81)
 - [配置](https://github.com/DODOEX/dodo-bridge-aggregator#%E9%85%8D%E7%BD%AE)
-  - [一、创建配置文件](https://github.com/DODOEX/dodo-bridge-aggregator#%E9%85%8D%E7%BD%AE)
+  - [一、创建配置文件](https://github.com/DODOEX/dodo-bridge-aggregator#%E4%B8%80%E3%80%81%E5%88%9B%E5%BB%BA%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
   - [二、添加配置](https://github.com/DODOEX/dodo-bridge-aggregator#%E4%BA%8C%E3%80%81%E6%B7%BB%E5%8A%A0%E9%85%8D%E7%BD%AE)
     - [1.配置数据](https://github.com/DODOEX/dodo-bridge-aggregator#1%E9%85%8D%E7%BD%AE%E6%95%B0%E6%8D%AE)
     - [2.接口说明](https://github.com/DODOEX/dodo-bridge-aggregator#2%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E)
@@ -28,14 +28,14 @@ $ git clone https://github.com/DODOEX/dodo-bridge-aggregator.git
 
 # 配置
 
-## 一. 创建配置文件
+## 一、创建配置文件
 
 ```bash
 $ mkdir src/bridge/[bridgeName]
 $ touch src/bridge/[bridgeName]/config.ts
 ```
 
-## 二. 添加配置
+## 二、添加配置
 
 ### 1.配置数据
 
@@ -393,7 +393,7 @@ type CrossChainParamsData = {
 - `isAvailable` 是否监控
 - `description`描述
 
-## 三. 测试配置
+## 三、测试配置
 
 调用 src/index.ts 中的方法测试配置
 
@@ -465,6 +465,6 @@ const tokenListResult = await getTokenList(bridgeName, crossChainParamsData);
 const healthResult = await health(bridgeName, crossChainParamsData);
 ```
 
-## 四. 提交合并配置
+## 四、提交合并配置
 
 配置测试没有问题后就可以提交 merge 给我们，在 [https://github.com/DODOEX/dodo-bridge-aggregator/pulls](https://github.com/DODOEX/dodo-bridge-aggregator/pulls) 中提交合并请求，收到合并请求后我们会检查配置是否有问题，如果没有问题将会进行合并，然后在测试环境中进行测试。
