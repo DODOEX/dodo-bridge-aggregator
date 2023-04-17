@@ -20,7 +20,7 @@
 
 # TL;DR
 
-This repository contains codes for cross-chain bridges to submit a config file to DODO so as to get your liquidity aggregated by DODO. The config file will include info on API Config and data conversion. Upon completion of config, you could submit via ‘[Submit Mergerd Config](https://github.com/DODOEX/dodo-bridge-aggregator#4-%E6%8F%90%E4%BA%A4%E5%90%88%E5%B9%B6%E9%85%8D%E7%BD%AE)’ to DODO.
+This repository contains codes for cross-chain bridges to submit a config file to DODO so as to get your liquidity aggregated by DODO. The config file will include info on API Config and data conversion. Upon completion of config, you could submit via ‘[Submit Mergerd Config](https://github.com/DODOEX/dodo-bridge-aggregator#4-submit-merged-config)’ to DODO.
 
 # Clone codes
 
@@ -397,7 +397,7 @@ Call ‘health’ to check services or route is available before calling ‘rout
 - `isAvailable` If the service available for use
 - `description` description
 
-## 3. Configuration settings testing
+## 3. Test config
 
 Test configuration settings using method in src/index.ts
 
