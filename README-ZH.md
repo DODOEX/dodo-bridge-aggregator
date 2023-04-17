@@ -2,25 +2,25 @@
 
 # 目录
 
-- [介绍](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md%E4%BB%8B%E7%BB%8D)
-- [克隆代码](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md%E5%85%8B%E9%9A%86%E4%BB%A3%E7%A0%81)
-- [配置](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md%E9%85%8D%E7%BD%AE)
-  - [1. 创建配置文件](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md1-%E5%88%9B%E5%BB%BA%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
-  - [2. 添加配置](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md2-%E6%B7%BB%E5%8A%A0%E9%85%8D%E7%BD%AE)
-    - [a. 配置数据](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.mda-%E9%85%8D%E7%BD%AE%E6%95%B0%E6%8D%AE)
-    - [b. 接口说明](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.mdb-%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E)
-      - [i. route](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.mdi-route)
-      - [ii. status](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.mdii-status)
-      - [iii. tokenList](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.mdiii-tokenlist)
-      - [iv. buildTransactionData](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.mdiv-buildtransactiondata)
-      - [v. createOrder](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.mdv-createorder)
-      - [vi. health](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.mdvi-health)
-  - [3. 测试配置](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md3-%E6%B5%8B%E8%AF%95%E9%85%8D%E7%BD%AE)
-  - [4. 提交合并配置](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md4-%E6%8F%90%E4%BA%A4%E5%90%88%E5%B9%B6%E9%85%8D%E7%BD%AE)
+- [介绍](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md#%E4%BB%8B%E7%BB%8D)
+- [克隆代码](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md#%E5%85%8B%E9%9A%86%E4%BB%A3%E7%A0%81)
+- [配置](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md#%E9%85%8D%E7%BD%AE)
+  - [1. 创建配置文件](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md#1-%E5%88%9B%E5%BB%BA%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
+  - [2. 添加配置](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md#2-%E6%B7%BB%E5%8A%A0%E9%85%8D%E7%BD%AE)
+    - [a. 配置数据](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md#a-%E9%85%8D%E7%BD%AE%E6%95%B0%E6%8D%AE)
+    - [b. 接口说明](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md#b-%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E)
+      - [i. route](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md#i-route)
+      - [ii. status](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md#ii-status)
+      - [iii. tokenList](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md#iii-tokenlist)
+      - [iv. buildTransactionData](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md#iv-buildtransactiondata)
+      - [v. createOrder](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md#v-createorder)
+      - [vi. health](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md#vi-health)
+  - [3. 测试配置](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md#3-%E6%B5%8B%E8%AF%95%E9%85%8D%E7%BD%AE)
+  - [4. 提交合并配置](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md#4-%E6%8F%90%E4%BA%A4%E5%90%88%E5%B9%B6%E9%85%8D%E7%BD%AE)
 
 # 介绍
 
-该项目旨在聚合第三方跨链桥。跨链桥只需提供一个配置文件，该配置文件涵盖接口配置和数据转换。每个接口将返回相应的数据，以实现聚合。一旦配置完成，即可在“[提交合并配置](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md4-%E6%8F%90%E4%BA%A4%E5%90%88%E5%B9%B6%E9%85%8D%E7%BD%AE)”中提交合并。
+该项目旨在聚合第三方跨链桥。跨链桥只需提供一个配置文件，该配置文件涵盖接口配置和数据转换。每个接口将返回相应的数据，以实现聚合。一旦配置完成，即可在“[提交合并配置](https://github.com/DODOEX/dodo-bridge-aggregator/blob/main/README-ZH.md#4-%E6%8F%90%E4%BA%A4%E5%90%88%E5%B9%B6%E9%85%8D%E7%BD%AE)”中提交合并。
 
 # 克隆代码
 
