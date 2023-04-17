@@ -2,21 +2,21 @@
 
 # Table of Contents
 
-- [TL;DR](https://github.com/DODOEX/dodo-bridge-aggregator#%E4%BB%8B%E7%BB%8D)
-- [Clone codes](https://github.com/DODOEX/dodo-bridge-aggregator#%E5%85%8B%E9%9A%86%E4%BB%A3%E7%A0%81)
-- [Configuration](https://github.com/DODOEX/dodo-bridge-aggregator#%E9%85%8D%E7%BD%AE)
-  - [1. Add config file](https://github.com/DODOEX/dodo-bridge-aggregator#1-%E5%88%9B%E5%BB%BA%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
-  - [2. Config](https://github.com/DODOEX/dodo-bridge-aggregator#2-%E6%B7%BB%E5%8A%A0%E9%85%8D%E7%BD%AE)
-    - [a. Prepare config data](https://github.com/DODOEX/dodo-bridge-aggregator#a-%E9%85%8D%E7%BD%AE%E6%95%B0%E6%8D%AE)
-    - [b. Config items](https://github.com/DODOEX/dodo-bridge-aggregator#b-%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E)
+- [TL;DR](https://github.com/DODOEX/dodo-bridge-aggregator#tldr)
+- [Clone codes](https://github.com/DODOEX/dodo-bridge-aggregator#clone-codes)
+- [Configuration](https://github.com/DODOEX/dodo-bridge-aggregator#configuration)
+  - [1. Add config file](https://github.com/DODOEX/dodo-bridge-aggregator#1-add-config-file)
+  - [2. Config](https://github.com/DODOEX/dodo-bridge-aggregator#2-config)
+    - [a. Prepare config data](https://github.com/DODOEX/dodo-bridge-aggregator#a-prepare-config-data)
+    - [b. Config items](https://github.com/DODOEX/dodo-bridge-aggregator#b-config-items)
       - [i. route](https://github.com/DODOEX/dodo-bridge-aggregator#i-route)
       - [ii. status](https://github.com/DODOEX/dodo-bridge-aggregator#ii-status)
       - [iii. tokenList](https://github.com/DODOEX/dodo-bridge-aggregator#iii-tokenlist)
       - [iv. buildTransactionData](https://github.com/DODOEX/dodo-bridge-aggregator#iv-buildtransactiondata)
       - [v. createOrder](https://github.com/DODOEX/dodo-bridge-aggregator#v-createorder)
       - [vi. health](https://github.com/DODOEX/dodo-bridge-aggregator#vi-health)
-  - [3. Test config](https://github.com/DODOEX/dodo-bridge-aggregator#3-%E6%B5%8B%E8%AF%95%E9%85%8D%E7%BD%AE)
-  - [4. Submit merged config](https://github.com/DODOEX/dodo-bridge-aggregator#4-%E6%8F%90%E4%BA%A4%E5%90%88%E5%B9%B6%E9%85%8D%E7%BD%AE)
+  - [3. Test config](https://github.com/DODOEX/dodo-bridge-aggregator#4-test-config)
+  - [4. Submit merged config](https://github.com/DODOEX/dodo-bridge-aggregator#4-submit-merged-config)
 
 # TL;DR
 
@@ -91,7 +91,7 @@ const bridgeNameConfig: CrossChainConfig = {
           throw new CrossChainBusinessException(errorCodes.ERROR);
         return res.data;
       },
-      // The interface requests parameter data to be placed in "requestMapping", and the field values will be mapped from the "CrossChainParamsData" parameter
+      // Interface request parameter data is put into "requestMapping", and field values are mapped from "CrossChainParamsData" parameters
       requestMapping: {
         fromChain: "fromChainId",
         fromAmount: {
@@ -100,7 +100,7 @@ const bridgeNameConfig: CrossChainConfig = {
         toChain: { field: "toChain", type: "string" },
         // other params
       },
-      // The interface returns data and puts it in "responseMapping", and the field values will be mapped from the "interface response data"
+      // The interface return data is put into "responseMapping", and the field values are mapped from "interface response data
       responseMapping: {
         depositContract: "data.contractAddress", // deposit contract address
         toAmount: "data.amountOutMin", // amount reaching the receiving chain, unit in gwei
@@ -252,7 +252,7 @@ const bridgeNameConfig: CrossChainConfig = {
 export default bridgeNameConfig;
 ```
 
-### b. 接口说明
+### b. Config items
 
 - `name` Bridge name
 - `apiInterface` API interface config API
@@ -298,8 +298,8 @@ type CrossChainParamsData = {
   toTokenPrice: string, // receiving token price
   fromAddress: string, // sending user address
   toAddress: string, // receiving user address
-  slippage: number, // 滑点
-  fromHash?: string, // 来源链交易hash
+  slippage: number, // slippage
+  fromHash?: string, // sending chain hash
 };
 ```
 
@@ -342,11 +342,11 @@ To get cross chain orders status
 
 Need responses from third party bridges on tokens supported or available to transact
 
-1. 请求数据
+1. Data request
 
    > Use ‘CrossChainParamsData’
 
-2. 响应数据
+2. Responses
    > You need to map the responses in ‘responseMapping’ to return the required fields back to DODO
 
 - `tokens` Token information
@@ -397,7 +397,7 @@ Call ‘health’ to check services or route is available before calling ‘rout
 - `isAvailable` If the service available for use
 - `description` description
 
-## 3. 测试配置
+## 3. Configuration settings testing
 
 Test configuration settings using method in src/index.ts
 

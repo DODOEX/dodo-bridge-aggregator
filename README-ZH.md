@@ -394,7 +394,7 @@ type CrossChainParamsData = {
 2. 响应数据
    > 如果【isAvailable】为 false 代表服务不可用
 
-- `isAvailable` 是否监控
+- `isAvailable` 服务是否可用
 - `description`描述
 
 ## 3. 测试配置
