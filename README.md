@@ -471,6 +471,6 @@ const healthResult = await health(bridgeName, crossChainParamsData);
 
 ## 4. Submit merged config
 
-Upon completion of configuration, you can submit a merge request with correct configuration information to DODO via https://github.com/DODOEX/dodo-bridge-aggregator/pulls[https://github.com/DODOEX/dodo-bridge-aggregator/pulls](https://github.com/DODOEX/dodo-bridge-aggregator/pulls)
+Upon completion of configuration, you can submit a merge request with correct configuration information to DODO via [https://github.com/DODOEX/dodo-bridge-aggregator/pulls](https://github.com/DODOEX/dodo-bridge-aggregator/pulls)
 
 We will verify your request and proceed to merge, and test in the test environment if data is submitted correctly.
