@@ -26,6 +26,22 @@
     "bignumber.js": "^9.1.1",
     "lodash": "^4.17.21"
   },
+  "keywords": [
+    "dodo",
+    "dodo-bridge",
+    "dodo-bridge-aggregator"
+  ],
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DODOEX/dodo-bridge-aggregator"
+  },
+  "bugs": {
+    "url": "https://github.com/DODOEX/dodo-bridge-aggregator/issues"
+  },
+  "homepage": "https://github.com/DODOEX/dodo-bridge-aggregator#readme",
   "jest": {
     "moduleFileExtensions": [
       "js",
