@@ -1,6 +1,7 @@
 
 import { buildTransactionData, CrossChainParamsData, getBridgeConfig, getRoute, createOrder, getStatus, getTokenList, health } from '../src/index';
 const bridgeName = 'swft_test';
+jest.setTimeout(15000);
 describe("swft api method test", () => {
     const crossChainParamsData: CrossChainParamsData = {
         fromChainId: 56, // 来源链

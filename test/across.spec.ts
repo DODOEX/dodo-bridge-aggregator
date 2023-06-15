@@ -30,7 +30,7 @@ function createRouteParams(overrides: Partial<CrossChainParamsData> = {}) {
     ...overrides,
   };
 }
-
+jest.setTimeout(15000);
 describe("across tests", () => {
   describe("get route", () => {
     it("should return route for USDC", async () => {
