@@ -1,21 +1,21 @@
-**在提出此拉取请求时，请填写以下几个信息 | When making this pull request, please fill in the following information：**
+**When making this pull request, please fill in the following information：**
 
-#### *项目名称？ | *Project name?
-
--
-
-#### *邮箱？ | *Email?
+#### *Project name?
 
 -
 
-#### *推特？ | *Twitter?
+#### *Email?
 
 -
 
-#### *官网？ | *Official website?
+#### *Twitter?
 
 -
 
-#### *对接API文档 | *API Doc?
+#### *Official website?
+
+-
+
+#### *API Doc?
 
 -
