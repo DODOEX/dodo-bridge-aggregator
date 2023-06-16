@@ -16,6 +16,8 @@ export type CrossChainParamsData = {
     fromHash?: string
 };
 
+export type CrossChainParamsDataAndOther = CrossChainParamsData & { [key: string]: any };
+
 export type OtherData = { crossChainParamsData: CrossChainParamsData, beforeResult?: any, interfaceParamData?: any };
 
 export type ErrorCodes = {
@@ -47,7 +49,7 @@ export type CrossChainConfigInterface = {
     url: string,
     method: 'get' | 'post' | 'put',
     headers?: { [key: string]: any }
-    before?: (crossChainParamsData: CrossChainParamsData & { [key: string]: any }) => any,
+    before?: (crossChainParamsData: CrossChainParamsDataAndOther) => any,
     requestAfter: (res: any) => any,
     after?: <T>(error: Error, body: T | null) => T | null,
     requestMapping?: CrossChainConfigField,
@@ -58,7 +60,7 @@ export type FieldMapping = {
     field?: string,
     type?: 'number' | 'string',
     defaultValue?: any,
-    format?: (data: CrossChainParamsData & { [key: string]: any }, otherData: OtherData) => any
+    format?: (data: CrossChainParamsDataAndOther, otherData: OtherData) => any
 };
 
 export type Field = FieldMapping | string | number | boolean | CrossChainConfigField
@@ -108,7 +110,7 @@ export interface StatusInterface extends CrossChainConfigInterface {
     requestMapping: CrossChainConfigField,
     responseMapping: {
         toHash: Field,
-        statusInfo: StatusInfo | { format?: (data: CrossChainParamsData & { [key: string]: any }, otherData: OtherData) => StatusInfo }
+        statusInfo: StatusInfo | { format?: (data: CrossChainParamsDataAndOther, otherData: OtherData) => StatusInfo }
     },
 }
 
@@ -142,15 +144,17 @@ export interface TokenListInterface extends CrossChainConfigInterface {
     responseMapping: { [T in keyof TokenListResponse]: Field },
 }
 
+type Token = {
+    chainId: number,
+    address: string,
+    name: string,
+    symbol: string,
+    decimals: number,
+    logoImg: string
+}
+
 export type TokenListResponse = {
-    tokens: Field | {
-        chainId: number,
-        address: string,
-        name: string,
-        symbol: string,
-        decimals: number,
-        logoImg: string
-    }
+    tokens: Token[]
 }
 
 

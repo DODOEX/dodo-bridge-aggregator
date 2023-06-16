@@ -1,13 +1,12 @@
-import { CrossChainConfigField, CrossChainConfigInterface, ErrorCode, FieldMapping, OtherData } from './../types/index';
+import { CrossChainConfigField, CrossChainConfigInterface, CrossChainParamsDataAndOther, ErrorCode, FieldMapping, OtherData } from './../types/index';
 
 
 import axios from 'axios';
 import { get } from 'lodash';
-import { CrossChainParamsData } from '../types';
 import { CrossChainBusinessException } from '../exception';
 
 
-export function _configMappingConvertString(data: CrossChainParamsData & { [key: string]: any }, dataKeys: string[], dataMappingValue: string) {
+export function _configMappingConvertString(data: CrossChainParamsDataAndOther, dataKeys: string[], dataMappingValue: string) {
     if (dataKeys.includes(dataMappingValue)) {
         return data[dataMappingValue];
     } else if (get(data, dataMappingValue) !== undefined) {
@@ -17,7 +16,7 @@ export function _configMappingConvertString(data: CrossChainParamsData & { [key:
     }
 }
 
-export async function _configMappingConvertObject(data: CrossChainParamsData & { [key: string]: any }, dataKeys: string[], dataMappingValue: FieldMapping | CrossChainConfigField, otherData: OtherData) {
+export async function _configMappingConvertObject(data: CrossChainParamsDataAndOther, dataKeys: string[], dataMappingValue: FieldMapping | CrossChainConfigField, otherData: OtherData) {
     const { field, type, defaultValue, format } = dataMappingValue as FieldMapping;
     if (field || defaultValue !== undefined || format) {
         if (format) {
@@ -52,7 +51,7 @@ export async function _formatType(type: 'string' | 'number', str: any) {
  * @param {*} otherData 其他数据体
  * @returns 
  */
-export async function configMappingConvert(data: CrossChainParamsData & { [key: string]: any }, dataMapping: CrossChainConfigField | undefined, otherData: OtherData) {
+export async function configMappingConvert(data: CrossChainParamsDataAndOther, dataMapping: CrossChainConfigField | undefined, otherData: OtherData) {
     if (!data || !dataMapping) return null;
     const returnData: any = {}
     const dataKeys = Object.keys(data);
@@ -90,7 +89,7 @@ export async function request(url: string, method: string, params: any, requestA
 }
 
 
-export async function getData<T>(crossChainParamsData: CrossChainParamsData & { [key: string]: any }, apiInterface: CrossChainConfigInterface, interfaceParamData?: { [key: string]: any }): Promise<T & ErrorCode | null> {
+export async function getData<T>(crossChainParamsData: CrossChainParamsDataAndOther, apiInterface: CrossChainConfigInterface, interfaceParamData?: { [key: string]: any }): Promise<T & ErrorCode | null> {
     const { url, method, requestMapping, responseMapping, headers, before, requestAfter, after } = apiInterface;
     if (interfaceParamData && Object.prototype.toString.call(interfaceParamData) === '[object Object]') {
         crossChainParamsData = Object.assign(crossChainParamsData, interfaceParamData);
