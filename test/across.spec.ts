@@ -137,7 +137,8 @@ describe("across tests", () => {
       const status = await getStatus(bridgeName, invalidRouteParams);
 
       expect(!!status).toEqual(true);
-      expect(status?.code).toEqual("DEPOSIT_NOT_FOUND");
+    //   expect(status?.code).toEqual("DEPOSIT_NOT_FOUND");
+      expect(status?.statusInfo.status).toEqual("NOT_FOUND");
     });
   });
 

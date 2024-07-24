@@ -4,6 +4,7 @@ import BigNumber from "bignumber.js";
 import { CrossChainBusinessException } from "./../../exception/index";
 import { CrossChainConfig, StatusInfo } from "../../types";
 import { WETH_ADDRESSES } from "./utils";
+import { ethers } from "ethers";
 
 const vercelApiHost = "https://across.to";
 const scraperApiHost = "https://api.across.to";
@@ -176,7 +177,8 @@ const bridgeNameConfig: CrossChainConfig = {
 
         if (err instanceof AxiosError) {
           if (err.response?.status === 404) {
-            throw new CrossChainBusinessException(errorCodes.DEPOSIT_NOT_FOUND);
+            return { toHash: '', statusInfo: { status: "NOT_FOUND", message: 'NOT_FOUND', bridgeResponseResult: {} } } as any;
+            // throw new CrossChainBusinessException(errorCodes.DEPOSIT_NOT_FOUND);
           }
         }
 
@@ -271,7 +273,15 @@ const bridgeNameConfig: CrossChainConfig = {
         },
       },
       responseMapping: {
-        data: "data",
+        data: {
+          format: (resData, { crossChainParamsData }) => {
+            if (crossChainParamsData.referrer) {
+              return ethers.utils.hexConcat([resData.data, '0xd00dfeeddeadbeef', crossChainParamsData.referrer]);
+            } else {
+              return resData.data;
+            }
+          }
+        },
         value: "value",
       },
     },

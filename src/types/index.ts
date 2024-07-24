@@ -13,7 +13,8 @@ export type CrossChainParamsData = {
     fromAddress: string, // 来源用户地址
     toAddress: string, // 目标用户地址
     slippage: number,
-    fromHash?: string
+    fromHash?: string,
+    referrer?: string
 };
 
 export type CrossChainParamsDataAndOther = CrossChainParamsData & { [key: string]: any };
@@ -86,11 +87,21 @@ export type RouteResponse = {
 }
 
 export type RouteFeeResponse = {
-    swapFee?: string,
-    destinationGasFee: string,
-    crossChainFee?: string,
-    otherFee?: string,
+    swapFee?: string | RouteFee,
+    destinationGasFee: string | RouteFee,
+    crossChainFee?: string | RouteFee,
+    otherFee?: string | RouteFee,
 }
+
+export type RouteFee = {
+    chainId: number,
+    address: string,
+    amount: string,
+    symbol?: string,
+    unit?: 'wei' | 'ether',
+    decimals?: number,
+}
+
 
 // buildTransactionData
 
@@ -102,6 +113,7 @@ export interface BuildTransactionDataInterface extends CrossChainConfigInterface
 export type BuildTransactionDataResponse = {
     data: string,
     value: string,
+    to?: string,
 }
 
 // status
