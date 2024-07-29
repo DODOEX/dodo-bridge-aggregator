@@ -19,6 +19,17 @@ const errorCodes = {
   NOT_ROUTE: { code: "NOT_ROUTE", message: "NOT ROUTE" },
 };
 
+const codes: any = {
+  2000: { code: "PARAMETER_ERROR", message: "The Chain not Support" },
+  2001: { code: "CHAIN_NOT_SUPPORT", message: "The Chain not Support" },
+  2002: { code: "TOKEN_NOT_SUPPORT", message: "The Token not Support" },
+  2003: { code: "NOT_ROUTE", message: "No Route Found" },
+  2004: { code: "INSUFFICIENT_LIQUIDITY", message: "Insufficient Liquidity" },
+  2005: { code: "NOT_SUPPORT_SLIPPAGE", message: "Slippage Out of Range" },
+  2006: { code: "INSUFFICIENT_AMOUNT", message: "Insufficient amount" },
+  2007: { code: "INVALID_ADDRESS", message: "Invalid address" },
+};
+
 async function getTokenList(network: string, page: number, size: number) {
   const res = await axios.get(`${tokenServerHost}/api/queryTokenList`, { params: { network, page, size }, headers: { "Content-Type": "application/json" } });
   if (res.status !== 200 || res.data.code !== 200) {
@@ -66,7 +77,7 @@ const butterConfig: CrossChainConfig = {
       method: "get",
       requestAfter: (res) => {
         if (res.errno !== 0)
-          throw new CrossChainBusinessException(errorCodes.ERROR);
+          throw new CrossChainBusinessException({ code: codes[res.errno]?.code || errorCodes.NOT_ROUTE.code, message: res.message });
         if (res.data.length < 1)
           throw new CrossChainBusinessException(errorCodes.NOT_ROUTE);
         return res.data[0];
@@ -163,8 +174,8 @@ const butterConfig: CrossChainConfig = {
       url: `${serverHost}/swap`,
       method: "get",
       requestAfter: (res) => {
-        if (res.errno !== 0 || res.data.length < 1)
-          throw new CrossChainBusinessException(errorCodes.ERROR);
+        if (res.errno !== 0) throw new CrossChainBusinessException({ code: codes[res.errno]?.code || errorCodes.NOT_ROUTE.code, message: res.message });
+        else if (res.data.length < 1) throw new CrossChainBusinessException(errorCodes.ERROR);
         return res.data[0];
       },
       responseMapping: {
