@@ -151,9 +151,9 @@ const butterConfig: CrossChainConfig = {
           destinationGasFee: '0',
         },
         otherPayOut: {
-          format: (route) => {
+          format: (route, { crossChainParamsData }) => {
             if (route.bridgeChain.tokenIn.symbol === 'WMAPO') {
-              return new BigNumber(route.bridgeFee.amount).times(route.fromPlatformTokenPrice).toString();
+              return new BigNumber(route.bridgeFee.amount).times(crossChainParamsData.fromPlatformTokenPrice).toString();
             } else {
               return '0';
             }
