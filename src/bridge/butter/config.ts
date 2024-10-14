@@ -119,6 +119,13 @@ const butterConfig: CrossChainConfig = {
               .toFixed(0)
           }
         },
+        toAmountMin: {
+          format: (route, { crossChainParamsData }) => {
+            return new BigNumber(route.minAmountOut.amount)
+              .times(10 ** crossChainParamsData.toTokenDecimals)
+              .toFixed(0)
+          }
+        },
         fee: {
           swapFee: '0',
           crossChainFee: {

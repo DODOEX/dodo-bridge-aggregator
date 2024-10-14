@@ -15,9 +15,9 @@ describe("butter api method test", () => {
         toTokenAddress: '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
         toTokenDecimals: 6,
         toTokenPrice: '1',
-        fromAddress: '0xd8C446197cA9eE5b6cFC212460C9C5b621a5e1F2',
-        toAddress: '0xd8C446197cA9eE5b6cFC212460C9C5b621a5e1F2',
-        slippage: 0.01
+        fromAddress: '0x2D4C407BBe49438ED859fe965b140dcF1aaB71a9',
+        toAddress: '0x2D4C407BBe49438ED859fe965b140dcF1aaB71a9',
+        slippage: 0.02
     }
 
     it("should return route", async () => {

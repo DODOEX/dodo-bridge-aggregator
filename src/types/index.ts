@@ -79,6 +79,7 @@ export interface RouteInterface extends CrossChainConfigInterface {
 export type RouteResponse = {
     depositContract: string,
     toAmount: string,
+    toAmountMin?: string,
     executionDuration?: number,
     fee: RouteFeeResponse,
     otherPayOut: string,
