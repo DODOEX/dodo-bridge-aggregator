@@ -107,14 +107,14 @@ const butterConfig: CrossChainConfig = {
         },
         type: "exactIn", //exactIn, exactOut
         slippage: { format: (params) => params.slippage * 10000 },
-        entrance: "Butter+", //eg: Butter+
+        entrance: "dodo", //eg: Butter+
       },
       responseMapping: {
         // Call the swap API to exchange and cross assets and retrieve the deposit contract information
         depositContract: "contract",
         toAmount: {
           format: (route, { crossChainParamsData }) => {
-            return new BigNumber(route.minAmountOut.amount)
+            return new BigNumber(route.dstChain.totalAmountOut)
               .times(10 ** crossChainParamsData.toTokenDecimals)
               .toFixed(0)
           }
