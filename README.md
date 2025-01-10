@@ -86,7 +86,7 @@ const bridgeNameConfig: CrossChainConfig = {
       },
       // call this function after making API request
       requestAfter: (res) => {
-        // check if API request returns a valid or expected response; throw an exception or error if the respons is not normal or expected
+        // check if API request returns a valid or expected response; throw an exception or error if the response is not normal or expected
         if (res.code !== 200)
           throw new CrossChainBusinessException(errorCodes.ERROR);
         return res.data;
